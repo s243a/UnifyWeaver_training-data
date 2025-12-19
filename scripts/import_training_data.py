@@ -45,9 +45,16 @@ except ImportError:
 
 def iter_jsonl_files(base_dir: Path) -> Iterator[Path]:
     """Iterate over all JSONL files in the training data directory."""
+    # Fixed subdirectories
     for subdir in ['education', 'source', 'playbooks', 'docs', 'prerequisites']:
         subdir_path = base_dir / subdir
         if subdir_path.exists():
+            for jsonl_file in subdir_path.rglob('*.jsonl'):
+                yield jsonl_file
+
+    # Also scan book-* directories (e.g., book-01-foundations)
+    for subdir_path in base_dir.iterdir():
+        if subdir_path.is_dir() and subdir_path.name.startswith('book-'):
             for jsonl_file in subdir_path.rglob('*.jsonl'):
                 yield jsonl_file
 
@@ -65,12 +72,13 @@ def parse_jsonl(file_path: Path) -> Iterator[Dict[str, Any]]:
                 print(f"  Warning: JSON error in {file_path}:{line_num}: {e}")
 
 
-def infer_source_type(file_path: Path, base_dir: Path) -> str:
-    """Infer source_type from file location."""
-    relative = file_path.relative_to(base_dir)
-    parts = relative.parts
-    if parts[0] in ['education', 'source', 'playbooks', 'docs', 'prerequisites']:
+def infer_source_type(source_file: str) -> str:
+    """Infer source_type from file path string."""
+    parts = Path(source_file).parts
+    if parts and parts[0] in ['education', 'source', 'playbooks', 'docs', 'prerequisites']:
         return parts[0]
+    if parts and parts[0].startswith('book-'):
+        return 'education'
     return 'unknown'
 
 
@@ -169,7 +177,7 @@ class TrainingDataImporter:
         self.stats['clusters_created'] += 1
 
         # Create answer
-        source_type = record.get('source_type', infer_source_type(Path(source_file), Path(self.db_path).parent))
+        source_type = record.get('source_type', infer_source_type(source_file))
         cursor.execute("""
             INSERT INTO answers (source_file, record_id, text, text_variant)
             VALUES (?, ?, ?, 'default')
