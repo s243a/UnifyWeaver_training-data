@@ -15,7 +15,7 @@ The data populates the Knowledge Graph Topology system (see `docs/proposals/ROAD
 
 ```
 training-data/
-├── education/           # Extracted from UnifyWeaver_Education
+├── education/           # Extracted from education/ (UnifyWeaver_Education)
 │   ├── book-01-foundations/
 │   │   ├── ch01_introduction.jsonl
 │   │   ├── ch02_prolog_fundamentals.jsonl
@@ -173,7 +173,7 @@ Training data is populated by LLMs following review playbooks, not by extraction
 ```bash
 # Point LLM at a chapter
 Read and follow playbooks/chapter_review_playbook.md for:
-  education/UnifyWeaver_Education/book-01-foundations/02_prolog_fundamentals.md
+  education/book-01-foundations/02_prolog_fundamentals.md
 
 # LLM produces:
   training-data/education/book-01-foundations/ch02_prolog_fundamentals.jsonl
