@@ -225,6 +225,30 @@ results = db.search_via_interface(
 prereqs = db.get_foundational(chapter_cluster_id)
 ```
 
+## Pre-computed Embeddings
+
+Pre-computed Q/A embeddings are available on Hugging Face Hub:
+
+**Dataset**: [s243a/unifyweaver-embeddings](https://huggingface.co/datasets/s243a/unifyweaver-embeddings)
+
+| File | Model | Dimensions | Pairs |
+|------|-------|------------|-------|
+| `tailored_all-minilm_384d_v1_2025-12-25.npz` | all-MiniLM-L6-v2 | 384 | 644 |
+| `tailored_modernbert_768d_v1_2025-12-25.npz` | nomic-embed-text-v1.5 | 768 | 644 |
+
+```python
+from huggingface_hub import hf_hub_download
+import numpy as np
+
+path = hf_hub_download(
+    repo_id="s243a/unifyweaver-embeddings",
+    filename="tailored_all-minilm_384d_v1_2025-12-25.npz"
+)
+data = np.load(path)
+q_embeddings = data["q_embeddings"]  # (644, 384)
+a_embeddings = data["a_embeddings"]  # (644, 384)
+```
+
 ## License
 
 Training data inherits licenses from source:
