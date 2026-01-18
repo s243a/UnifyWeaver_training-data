@@ -15,41 +15,55 @@ The data populates the Knowledge Graph Topology system (see `docs/proposals/ROAD
 
 ```
 training-data/
-├── education/           # Extracted from education/ (UnifyWeaver_Education)
+├── by-book/             # Original book-organized training data
 │   ├── book-01-foundations/
-│   │   ├── ch01_introduction.jsonl
-│   │   ├── ch02_prolog_fundamentals.jsonl
-│   │   └── ...
 │   ├── book-02-bash-target/
-│   └── ...
+│   ├── ...
+│   ├── book-14-ai-training/
+│   ├── other-books/
+│   ├── prerequisites/
+│   ├── tailored/
+│   ├── tailored-gemini/
+│   └── tailored-gemini-v2/
 │
-├── source/              # Extracted from src/unifyweaver/
-│   ├── targets/
-│   │   ├── python_target.jsonl
-│   │   ├── go_target.jsonl
-│   │   └── ...
-│   ├── core/
-│   ├── glue/
-│   └── sources/
+├── by-topic/            # NEW: Task-oriented Q&A (for quickstart agent)
+│   ├── quickstart/      # Level 0-1: Identity, capabilities
+│   ├── compilation/     # Prolog compilation to targets
+│   ├── mindmap/         # Mindmap tools
+│   ├── gui/             # App generation, visualization
+│   ├── semantic-search/ # Embeddings, models, inference
+│   └── security/        # Policy and webapp security
 │
-├── playbooks/           # Extracted from playbooks/
-│   ├── data-sources.jsonl
-│   ├── csharp-compilation.jsonl
-│   └── ...
-│
-├── docs/                # Extracted from docs/
-│   ├── design/
-│   ├── proposals/
-│   └── ...
-│
-├── prerequisites/       # Chapter/book prerequisites
-│   ├── environment-setup.jsonl
-│   ├── tool-installation.jsonl
-│   └── ...
-│
-├── relations.jsonl      # Cross-content relations (11 types)
-├── interfaces.jsonl     # Semantic interface definitions
-└── unified.db           # SQLite database (generated)
+├── scripts/             # Data processing scripts
+├── unified.db           # SQLite database (generated)
+└── README.md
+```
+
+### By-Book vs By-Topic
+
+| Organization | Purpose | Use Case |
+|--------------|---------|----------|
+| `by-book/` | Educational sequence | Learning UnifyWeaver systematically |
+| `by-topic/` | Task-oriented | "I want to accomplish X" queries |
+
+The `by-topic/` structure supports the **quickstart agent** - see `docs/design/QUICKSTART_AGENT_*.md` for design details.
+
+### Legacy Clustered Data (for LDA methods)
+
+The original clustered training data (multiple questions per cluster, designed for LDA topic modeling) was removed in favor of higher-quality 1:1 Q&A pairs. The 1:1 format is sufficient for Procrustes projection (our recommended approach) and produces better results.
+
+**Why 1:1 works for Procrustes:** Procrustes projection is mathematically defined even for single input-output mappings, unlike LDA which requires clusters for statistical soundness. When clustering is used with Procrustes, it's for data compression and routing efficiency, not numeric validity.
+
+If you need the clustered format for LDA or similar methods, it's preserved in git history:
+
+**Browse on GitHub:** [ad8b8fe6c32d1d4ffa633792f27ae1575b1dc6c0](https://github.com/s243a/UnifyWeaver_training-data/tree/ad8b8fe6c32d1d4ffa633792f27ae1575b1dc6c0)
+
+```bash
+# Last commit with clustered data
+git checkout ad8b8fe -- by-book/book-01-foundations/
+
+# Or view what was available
+git show ad8b8fe --stat | grep "by-book/book-"
 ```
 
 ## Data Format
