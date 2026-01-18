@@ -15,42 +15,38 @@ The data populates the Knowledge Graph Topology system (see `docs/proposals/ROAD
 
 ```
 training-data/
-├── education/           # Extracted from education/ (UnifyWeaver_Education)
+├── by-book/             # Original book-organized training data
 │   ├── book-01-foundations/
-│   │   ├── ch01_introduction.jsonl
-│   │   ├── ch02_prolog_fundamentals.jsonl
-│   │   └── ...
 │   ├── book-02-bash-target/
-│   └── ...
+│   ├── ...
+│   ├── book-14-ai-training/
+│   ├── other-books/
+│   ├── prerequisites/
+│   ├── tailored/
+│   ├── tailored-gemini/
+│   └── tailored-gemini-v2/
 │
-├── source/              # Extracted from src/unifyweaver/
-│   ├── targets/
-│   │   ├── python_target.jsonl
-│   │   ├── go_target.jsonl
-│   │   └── ...
-│   ├── core/
-│   ├── glue/
-│   └── sources/
+├── by-topic/            # NEW: Task-oriented Q&A (for quickstart agent)
+│   ├── quickstart/      # Level 0-1: Identity, capabilities
+│   ├── compilation/     # Prolog compilation to targets
+│   ├── mindmap/         # Mindmap tools
+│   ├── gui/             # App generation, visualization
+│   ├── semantic-search/ # Embeddings, models, inference
+│   └── security/        # Policy and webapp security
 │
-├── playbooks/           # Extracted from playbooks/
-│   ├── data-sources.jsonl
-│   ├── csharp-compilation.jsonl
-│   └── ...
-│
-├── docs/                # Extracted from docs/
-│   ├── design/
-│   ├── proposals/
-│   └── ...
-│
-├── prerequisites/       # Chapter/book prerequisites
-│   ├── environment-setup.jsonl
-│   ├── tool-installation.jsonl
-│   └── ...
-│
-├── relations.jsonl      # Cross-content relations (11 types)
-├── interfaces.jsonl     # Semantic interface definitions
-└── unified.db           # SQLite database (generated)
+├── scripts/             # Data processing scripts
+├── unified.db           # SQLite database (generated)
+└── README.md
 ```
+
+### By-Book vs By-Topic
+
+| Organization | Purpose | Use Case |
+|--------------|---------|----------|
+| `by-book/` | Educational sequence | Learning UnifyWeaver systematically |
+| `by-topic/` | Task-oriented | "I want to accomplish X" queries |
+
+The `by-topic/` structure supports the **quickstart agent** - see `docs/design/QUICKSTART_AGENT_*.md` for design details.
 
 ## Data Format
 
