@@ -82,14 +82,21 @@ def call_claude_cli(prompt: str, model: str = "sonnet", timeout: int = 120) -> O
         return None
 
 
-def call_gemini_cli(prompt: str, model: str = "gemini-2.5-flash-preview-05-20", timeout: int = 120) -> Optional[str]:
+def call_gemini_cli(prompt: str, model: str = "", timeout: int = 120) -> Optional[str]:
     """Call gemini CLI."""
     try:
+        # Use stdin to avoid shell escaping issues with special characters
+        # Omit model flag to use gemini's default model
+        cmd = ["gemini", "--output-format", "text"]
+        if model:
+            cmd.extend(["-m", model])
         result = subprocess.run(
-            ["gemini", "-p", prompt, "-m", model, "--output-format", "text"],
+            cmd,
+            input=prompt,
             capture_output=True,
             text=True,
-            timeout=timeout
+            timeout=timeout,
+            cwd=str(Path.cwd())
         )
         if result.returncode == 0:
             return result.stdout.strip()
@@ -107,7 +114,9 @@ def call_gemini_cli(prompt: str, model: str = "gemini-2.5-flash-preview-05-20", 
 def call_llm(prompt: str, provider: str = "claude", model: str = "sonnet") -> Optional[str]:
     """Call LLM based on provider."""
     if provider == "gemini":
-        return call_gemini_cli(prompt, model)
+        # For gemini, use specified model if it starts with "gemini", otherwise default to gemini-3-flash-preview
+        gemini_model = model if model.startswith("gemini") else "gemini-3-flash-preview"
+        return call_gemini_cli(prompt, gemini_model)
     else:
         return call_claude_cli(prompt, model)
 
