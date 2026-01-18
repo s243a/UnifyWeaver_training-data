@@ -48,6 +48,24 @@ training-data/
 
 The `by-topic/` structure supports the **quickstart agent** - see `docs/design/QUICKSTART_AGENT_*.md` for design details.
 
+### Legacy Clustered Data (for LDA methods)
+
+The original clustered training data (multiple questions per cluster, designed for LDA topic modeling) was removed in favor of higher-quality 1:1 Q&A pairs. The 1:1 format is sufficient for Procrustes projection (our recommended approach) and produces better results.
+
+**Why 1:1 works for Procrustes:** Procrustes projection is mathematically defined even for single input-output mappings, unlike LDA which requires clusters for statistical soundness. When clustering is used with Procrustes, it's for data compression and routing efficiency, not numeric validity.
+
+If you need the clustered format for LDA or similar methods, it's preserved in git history:
+
+**Browse on GitHub:** [ad8b8fe6c32d1d4ffa633792f27ae1575b1dc6c0](https://github.com/s243a/UnifyWeaver_training-data/tree/ad8b8fe6c32d1d4ffa633792f27ae1575b1dc6c0)
+
+```bash
+# Last commit with clustered data
+git checkout ad8b8fe -- by-book/book-01-foundations/
+
+# Or view what was available
+git show ad8b8fe --stat | grep "by-book/book-"
+```
+
 ## Data Format
 
 ### Q&A Clusters (JSONL)
