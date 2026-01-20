@@ -45,7 +45,7 @@ SKILL CONTENT:
 
 Generate Q&A pairs that:
 1. Questions should be what a NEW USER would ask (based on "When to Use" section)
-2. Answers should be concise, pointing to this skill and its commands
+2. Answers should be concise, include key commands/examples, and END with "See {skill_file} for details."
 3. Include the skill file in related_skills
 4. Include any docs/code mentioned in "Related" section in related_docs
 
